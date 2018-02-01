@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/editText_project_name"
+        android:layout_width="347dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="41dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
+    <Button
+        android:id="@+id/button_set_project_start_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="setProjectStartDate"
+        android:text="Anfangsdatum setzen"
+        app:layout_constraintStart_toStartOf="@+id/editText_project_name"
+        app:layout_constraintTop_toBottomOf="@+id/editText_project_name" />
+
+    <Button
+        android:id="@+id/button_set_project_end_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:onClick="setProjectEndDate"
+        android:text="Enddatum setzen"
+        app:layout_constraintStart_toStartOf="@+id/editText_project_name"
+        app:layout_constraintTop_toBottomOf="@+id/editText_project_name" />
+
+    <TextView
+        android:id="@+id/textView_project_date_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="216dp"
+        android:layout_marginTop="16dp"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/editText_project_name"
+        app:layout_constraintTop_toBottomOf="@+id/editText_project_name" />
+
+    <TextView
+        android:id="@+id/textView_project_date_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="216dp"
+        android:layout_marginTop="80dp"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/editText_project_name"
+        app:layout_constraintTop_toBottomOf="@+id/editText_project_name" />
+
+</android.support.constraint.ConstraintLayout>
