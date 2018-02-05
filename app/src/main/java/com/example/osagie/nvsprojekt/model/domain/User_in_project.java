@@ -57,7 +57,7 @@ public class User_in_project extends BaseDomain<Integer,User_in_project> {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public int compareTo(@NonNull User_in_project user_in_project) {
-        return Comparator.comparing(User_in_project::getId).compare(this,user_in_project);
+        return this.getId().compareTo(user_in_project.getId());
     }
 
     @Override

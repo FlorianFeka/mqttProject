@@ -37,7 +37,7 @@ public class Project_member_type extends BaseDomain<Integer,Project_member_type>
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public int compareTo(@NonNull Project_member_type project_member_type) {
-        return Comparator.comparing(Project_member_type::getId).compare(this,project_member_type);
+        return this.getId().compareTo(project_member_type.getId());
     }
 
     @Override
