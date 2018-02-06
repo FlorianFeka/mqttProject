@@ -3,9 +3,11 @@ package com.example.osagie.nvsprojekt.control;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 
+import com.example.osagie.nvsprojekt.model.repository.UserRepository;
 import com.example.osagie.nvsprojekt.view.MainActivity;
+
+import com.example.osagie.nvsprojekt.model.domain.User;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,8 +16,6 @@ import java.sql.SQLException;
 /**
  * Created by Florian on 30.01.2018.
  */
-
-
 @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
 public class AsyncTask_DB_Connection extends AsyncTask<String,Void,Boolean> {
     private static Connection con;
@@ -25,56 +25,55 @@ public class AsyncTask_DB_Connection extends AsyncTask<String,Void,Boolean> {
     private String errorMessage;
 
     public AsyncTask_DB_Connection(MainActivity mainActivity){
-        setMainActivity(mainActivity);
+        this.mainActivity=mainActivity;
     }
 
     @Override
     protected Boolean doInBackground(String... strings) {
         try {
-            setData(strings);
+            data = strings;
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/MQTT_PROJEKTMANAGMENT","root","toor");
+            con = DriverManager.getConnection("jdbc:mysql://10.0.0.1:3306/mqtt_projectmanagement","root","toor");
             UserRepository userRepository = new UserRepository();
             if(data[0].equals("signIn")){
-                setUser(userRepository.findByUsernameAndPassword());a
-                if(user!=null){
-                    return true;
-                }else {
-                    setErrorMessage("User wurde nicht gefunden.");
-                }
-            }else if(data[0].equals("register")){
-                setUser(userRepository.insert(new User(data[1],data[2],data[3])));
-                if(user!=null){
-                    if(userRepository.findByUsernameAndPassword(user.getUsername(),user.getPassword())==null){
+                user = userRepository.findByUsernameAndPassword(con,strings[1],strings[2]);
+                    if(user!=null){
                         return true;
+                    }else {
+                        setErrorMessage("User wurde nicht gefunden.");
+                        return false;
+                    }
+            }else if(data[0].equals("register")){
+                int erg = userRepository.insert(con,new User(data[1],data[2],data[3]));
+                if(erg == 0){
+                    if(userRepository.exist(con,user)){
+                        return true;
+                    }else{
+                        setErrorMessage("User existiert schon.");
                     }
                 }
             }
-            return false;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return false;
     }
 
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
         if(aBoolean){
-            switch (data[0]){
-                case "signIn":
-
-                    break;
-                case "register":
-                    break;
-            }
-
+            mainActivity.goToHome();
+        }else{
+            mainActivity.showError(getErrorMessage());
         }
     }
 
-
+    public String getErrorMessage() {
+        return errorMessage;
+    }
     public void setData(String[] data) {
         this.data = data;
     }
