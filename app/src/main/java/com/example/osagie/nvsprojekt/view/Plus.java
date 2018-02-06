@@ -2,6 +2,7 @@ package com.example.osagie.nvsprojekt.view;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -53,6 +54,12 @@ public class Plus extends AppCompatActivity
     public void setProjectEndDate(View view){
         isProject_date_start = false;
         showDialog(123);
+    }
+
+    public void addUser(View view)
+    {
+        Intent intent = new Intent(this, UserWahl.class);
+        startActivity(intent);
     }
 
     @Override

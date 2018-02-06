@@ -79,7 +79,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="120dp"
-        android:text="Projektmitglier Managen"
+        android:onClick="addUser"
+        android:text="Projektmitglieder Managen"
         app:layout_constraintStart_toStartOf="@+id/button_set_project_end_date"
         app:layout_constraintTop_toBottomOf="@+id/editText_project_name" />
 
