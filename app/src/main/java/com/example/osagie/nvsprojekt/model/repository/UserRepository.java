@@ -30,20 +30,17 @@ public class UserRepository extends BaseRepository <Integer,User>{
 
     @Override
     public int insert(Connection con, User entity) throws SQLException {
-        if(!exist(con,entity)) {
-            String stmnt = "INSERT INTO USER" +
-                    "(USERNAME,EMAIL,PASSWORD)" +
-                    "VALUES (?,?,?)";
-            PreparedStatement preStmnt = con.prepareStatement(stmnt);
-            preStmnt.setString(1, entity.getUsername());
-            preStmnt.setString(2, entity.getEmail());
-            preStmnt.setString(3, entity.getPassword());
-            int res = preStmnt.executeUpdate();
-            con.commit();
-            preStmnt.close();
-            return res;
-        }
-        return 0;
+        String stmnt = "INSERT INTO USER" +
+                "(USERNAME,EMAIL,PASSWORD)" +
+                "VALUES (?,?,?)";
+        PreparedStatement preStmnt = con.prepareStatement(stmnt);
+        preStmnt.setString(1, entity.getUsername());
+        preStmnt.setString(2, entity.getEmail());
+        preStmnt.setString(3, entity.getPassword());
+        int res = preStmnt.executeUpdate();
+        con.commit();
+        preStmnt.close();
+        return res;
     }
     public boolean exist(Connection con,User entity)throws SQLException {
         String stmnt="SELECT ID FROM USER WHERE USERNAME=? && EMAIL=? && PASSWORD=?";
@@ -109,13 +106,17 @@ public class UserRepository extends BaseRepository <Integer,User>{
         preStmnt.setString(1,username);
         preStmnt.setString(2,password);
         ResultSet rs = preStmnt.executeQuery();
+        String r_username = "",r_email = "",r_password = "";
+        int id = 0;
         User user=null;
         while(rs.next()){
-            user.setId(Integer.parseInt(rs.getString("ID")));
-            user.setUsername(rs.getString("USERNAME"));
-            user.setEmail(rs.getString("EMAIL"));
-            user.setPassword(rs.getString("PASSWORD"));
+            id = rs.getInt("ID");
+            r_username = rs.getString("USERNAME");
+            r_email = rs.getString("EMAIL");
+            r_password = rs.getString("PASSWORD");
         }
+        user = new User(r_username,r_email,r_password);
+        user.setId(id);
         return user;
     }
 }
