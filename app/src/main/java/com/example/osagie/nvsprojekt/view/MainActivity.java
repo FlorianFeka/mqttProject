@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.example.osagie.nvsprojekt.R;
+import com.example.osagie.nvsprojekt.control.AsyncTask_DB_Connection;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,18 +28,25 @@ public class MainActivity extends AppCompatActivity {
     {
         data.put("username",((EditText)findViewById(R.id.signIn_username)).getText().toString());
         data.put("password",((EditText)findViewById(R.id.signIn_password)).getText().toString());
-        Intent intent = new Intent(this, Home.class);
-        startActivity(intent);
-        this.finish();
+        new AsyncTask_DB_Connection(this).execute("signIn",data.get("username"),data.get("password"));
     }
 
     public void register_onClick(View view){
         data.put("username",((EditText)findViewById(R.id.register_username)).getText().toString());
         data.put("email",((EditText)findViewById(R.id.register_email)).getText().toString());
         data.put("password",((EditText)findViewById(R.id.register_password)).getText().toString());
+        new AsyncTask_DB_Connection(this).execute("signIn",data.get("username"),data.get("email"),data.get("password"),data.get("geschlecht"));
+    }
+
+    public void goToHome(){
         Intent intent = new Intent(this,Home.class);
+        intent.putExtra("username",data.get("username"));
         startActivity(intent);
         this.finish();
+    }
+
+    public void showError(String errorMessage){
+        Toast.makeText(this,errorMessage,Toast.LENGTH_LONG).show();
     }
 
     public void radioGroup_sex_onClick(View view){
