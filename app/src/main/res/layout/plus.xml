@@ -10,12 +10,12 @@
         android:id="@+id/editText_project_name"
         android:layout_width="332dp"
         android:layout_height="44dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/textView9"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1" />
@@ -24,76 +24,112 @@
         android:id="@+id/button_set_project_start_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:onClick="setProjectStartDate"
         android:text="Anfangsdatum setzen"
-        app:layout_constraintStart_toStartOf="@+id/editText_project_name"
-        app:layout_constraintTop_toBottomOf="@+id/editText_project_name" />
+        app:layout_constraintStart_toStartOf="@+id/project_description"
+        app:layout_constraintTop_toBottomOf="@+id/editText_project_description" />
 
     <Button
         android:id="@+id/button_set_project_end_date"
-        android:layout_width="wrap_content"
+        android:layout_width="156dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="61dp"
+        android:layout_marginTop="8dp"
         android:onClick="setProjectEndDate"
         android:text="Enddatum setzen"
-        app:layout_constraintStart_toStartOf="@+id/editText_project_name"
-        app:layout_constraintTop_toBottomOf="@+id/editText_project_name"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintStart_toStartOf="@+id/button_set_project_start_date"
+        app:layout_constraintTop_toBottomOf="@+id/button_set_project_start_date" />
 
     <TextView
         android:id="@+id/textView_project_date_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="216dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="8dp"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="@+id/editText_project_name"
-        app:layout_constraintTop_toBottomOf="@+id/editText_project_name" />
+        app:layout_constraintStart_toEndOf="@+id/button_set_project_start_date"
+        app:layout_constraintTop_toTopOf="@+id/button_set_project_start_date" />
 
     <TextView
         android:id="@+id/textView_project_date_end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="216dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="24dp"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="@+id/editText_project_name"
-        app:layout_constraintTop_toBottomOf="@+id/editText_project_name" />
+        app:layout_constraintStart_toStartOf="@+id/textView_project_date_start"
+        app:layout_constraintTop_toBottomOf="@+id/textView_project_date_start" />
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="142dp"
         android:layout_height="37dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="Projektname:"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/editText_project_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.771" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="8dp"
         android:onClick="addUser"
         android:text="Projektmitglieder Managen"
         app:layout_constraintStart_toStartOf="@+id/button_set_project_end_date"
-        app:layout_constraintTop_toBottomOf="@+id/editText_project_name" />
+        app:layout_constraintTop_toBottomOf="@+id/button_set_project_end_date" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:text="Erstellen"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/editText_project_name"
-        app:layout_constraintVertical_bias="0.808" />
+        app:layout_constraintTop_toBottomOf="@+id/button" />
+
+    <TextView
+        android:id="@+id/project_client"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="Auftraggeber:"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+    <EditText
+        android:id="@+id/editText_project_client"
+        android:layout_width="332dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/project_client"
+        app:layout_constraintTop_toBottomOf="@+id/project_client" />
+
+    <TextView
+        android:id="@+id/project_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Beschreibung:"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/project_client"
+        app:layout_constraintTop_toBottomOf="@+id/editText_project_client" />
+
+    <EditText
+        android:id="@+id/editText_project_description"
+        android:layout_width="332dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/project_description"
+        app:layout_constraintTop_toBottomOf="@+id/project_description" />
 
 </android.support.constraint.ConstraintLayout>

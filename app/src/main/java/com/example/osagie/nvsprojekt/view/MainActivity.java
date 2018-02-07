@@ -26,16 +26,21 @@ public class MainActivity extends AppCompatActivity {
 
     public void signIn_onClick(View c)
     {
-        data.put("username",((EditText)findViewById(R.id.signIn_username)).getText().toString());
-        data.put("password",((EditText)findViewById(R.id.signIn_password)).getText().toString());
-        new AsyncTask_DB_Connection(this).execute("signIn",data.get("username"),data.get("password"));
+        String username = ((EditText)findViewById(R.id.signIn_username)).getText().toString();
+        data.put("username", username);
+        String password = ((EditText)findViewById(R.id.signIn_password)).getText().toString();
+        data.put("password",password);
+        new AsyncTask_DB_Connection(this).execute("signIn",username,password);
     }
 
     public void register_onClick(View view){
-        data.put("username",((EditText)findViewById(R.id.register_username)).getText().toString());
-        data.put("email",((EditText)findViewById(R.id.register_email)).getText().toString());
-        data.put("password",((EditText)findViewById(R.id.register_password)).getText().toString());
-        new AsyncTask_DB_Connection(this).execute("signIn",data.get("username"),data.get("email"),data.get("password"),data.get("geschlecht"));
+        String username = ((EditText)findViewById(R.id.register_username)).getText().toString();
+        data.put("username",username);
+        String email = ((EditText)findViewById(R.id.register_email)).getText().toString();
+        data.put("email",email);
+        String password = ((EditText)findViewById(R.id.register_password)).getText().toString();
+        data.put("password",password);
+        new AsyncTask_DB_Connection(this).execute("register",username,email,password);
     }
 
     public void goToHome(){

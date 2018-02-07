@@ -49,13 +49,9 @@ public class UserRepository extends BaseRepository <Integer,User>{
         preStmnt.setString(2,entity.getEmail());
         preStmnt.setString(3,entity.getPassword());
         ResultSet resultSet= preStmnt.executeQuery();
-        while(resultSet.next()){
-            int id=resultSet.getInt("ID");
-            if(id!=0)
-                return true;
-        }
+        boolean next = resultSet.next();
         preStmnt.close();
-        return false;
+        return next;
     }
     @Override
     public User findById(Connection con, Integer id) throws SQLException {
