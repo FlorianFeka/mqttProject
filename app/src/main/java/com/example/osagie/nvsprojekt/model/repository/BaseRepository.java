@@ -1,6 +1,7 @@
 package com.example.osagie.nvsprojekt.model.repository;
 
-import domain.BaseDomain;
+
+import com.example.osagie.nvsprojekt.model.domain.BaseDomain;
 
 import java.sql.Connection;
 import java.sql.SQLException;

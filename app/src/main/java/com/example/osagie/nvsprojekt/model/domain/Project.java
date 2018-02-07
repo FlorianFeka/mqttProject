@@ -77,7 +77,7 @@ public class Project extends BaseDomain<Integer,Project> {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public int compareTo(@NonNull Project project) {
-        return Comparator.comparing(Project::getId).compare(this,project);
+        return this.getId().compareTo(project.getId());
     }
 
     @Override
