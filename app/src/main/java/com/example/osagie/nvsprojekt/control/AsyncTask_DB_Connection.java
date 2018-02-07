@@ -34,9 +34,10 @@ public class AsyncTask_DB_Connection extends AsyncTask<String,Void,Boolean> {
             data = strings;
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://10.0.0.1:3306/mqtt_projectmanagement","root","toor");
+            con.setAutoCommit(false);
             UserRepository userRepository = new UserRepository();
             if(data[0].equals("signIn")){
-                user = userRepository.findByUsernameAndPassword(con,strings[1],strings[2]);
+                user = userRepository.findByUsernameAndPassword(con,data[1],data[2]);
                     if(user!=null){
                         return true;
                     }else {
@@ -44,13 +45,16 @@ public class AsyncTask_DB_Connection extends AsyncTask<String,Void,Boolean> {
                         return false;
                     }
             }else if(data[0].equals("register")){
-                int erg = userRepository.insert(con,new User(data[1],data[2],data[3]));
-                if(erg == 0){
-                    if(userRepository.exist(con,user)){
+                user = new User(data[1],data[2],data[3]);
+                if(!userRepository.exist(con,user)){
+                    int erg = userRepository.insert(con,user);
+                    if(erg>0){
                         return true;
                     }else{
-                        setErrorMessage("User existiert schon.");
+                        setErrorMessage("User konnte nicht hinzugefügt werden, versuchen sie es später noch einmal");
                     }
+                }else{
+                    setErrorMessage("User existiert schon.");
                 }
             }
         } catch (ClassNotFoundException e) {
