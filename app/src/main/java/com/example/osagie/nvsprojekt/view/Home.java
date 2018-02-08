@@ -10,12 +10,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.osagie.nvsprojekt.R;
+import com.example.osagie.nvsprojekt.control.AsyncTask_DB_Connection;
+import com.example.osagie.nvsprojekt.model.domain.Project;
+
+import java.util.ArrayList;
 
 /**
  * Created by Jonathan on 29.01.2018.
  */
 
 public class Home extends AppCompatActivity {
+    private ArrayList<String> list = new ArrayList<>();
+    private String username;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,15 +50,15 @@ public class Home extends AppCompatActivity {
                 Log.i("xxx", io.getMessage());
             }
         }*/
-
+        Intent i=getIntent();
+        username=i.getStringExtra("username");
+        final ListView listView = (ListView)findViewById(R.id.list);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(listView.getContext(), android.R.layout.simple_list_item_1, list);
+        listView.setAdapter(adapter);
         Toolbar toolbar =(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Spinger");
-
-        String[] poke = {"Ekans", "Pikachu", "Paras", "Ditto"};
-        ListView listView = (ListView)findViewById(R.id.list);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(listView.getContext(), android.R.layout.simple_list_item_1, poke);
-        listView.setAdapter(adapter);
+        new AsyncTask_DB_Connection(this).execute("getAllProjectWithUser",username);
     }
 
     @Override
@@ -67,9 +73,24 @@ public class Home extends AppCompatActivity {
         {
             case R.id.addId:
                 Intent intent = new Intent(this, Plus.class);
+                intent.putExtra("username",username);
                 startActivity(intent);
                 return true;
         }
         return true;
+    }
+
+
+    public ArrayList<String> getList() {
+        return list;
+    }
+
+    public void setList(ArrayList<Project> list) {
+        for(Project p:list){
+            this.list.add(p.getProjectname());
+        }
+        ListView listView = (ListView)findViewById(R.id.list);
+        ((ArrayAdapter)listView.getAdapter()).notifyDataSetChanged();
+
     }
 }

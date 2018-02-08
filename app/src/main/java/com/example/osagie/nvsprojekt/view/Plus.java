@@ -9,11 +9,14 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.osagie.nvsprojekt.R;
+import com.example.osagie.nvsprojekt.control.AsyncTask_DB_Connection;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,16 +29,23 @@ public class Plus extends AppCompatActivity
 {
     private Calendar calendar;
     private TextView textView_project_date_start,textView_project_date_end;
+    private EditText projectName,client,description;
     private Map<String,String> data = new HashMap<>();
     private int year, month, day;
     private boolean isProject_date_start=true;
+    private ArrayList<String> member=new ArrayList<>();
+    private String username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
             setContentView(R.layout.plus);
-
+        Intent intent=getIntent();
+        username=intent.getStringExtra("username");
         textView_project_date_start = (TextView) findViewById(R.id.textView_project_date_start);
         textView_project_date_end = (TextView) findViewById(R.id.textView_project_date_end);
+        projectName=(EditText)findViewById(R.id.editText_project_name);
+        client=(EditText)findViewById(R.id.editText_project_client);
+        description=(EditText)findViewById(R.id.editText_project_description);
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
 
@@ -59,9 +69,32 @@ public class Plus extends AppCompatActivity
     public void addUser(View view)
     {
         Intent intent = new Intent(this, UserWahl.class);
-        startActivity(intent);
+        intent.putStringArrayListExtra("member",member);
+        startActivityForResult(intent,1);
     }
-
+    public void create(View view){
+        String name=projectName.getText().toString();
+        String client=this.client.getText().toString();
+        String des=description.getText().toString();
+        String start=textView_project_date_start.getText().toString();
+        String end=textView_project_date_end.getText().toString();
+        String names="";
+        for(String d:member){
+            names+=d+" ";
+        }
+        new AsyncTask_DB_Connection(this).execute("createProject",name,client,des,start,end,names,username);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            member=data.getStringArrayListExtra("member");
+            String s="";
+            for(String q:member){
+                s+=" "+q;
+            }
+            Toast.makeText(this,s+" added as a members",Toast.LENGTH_LONG).show();
+        }
+    }
     @Override
     protected Dialog onCreateDialog(int id) {
         // TODO Auto-generated method stub

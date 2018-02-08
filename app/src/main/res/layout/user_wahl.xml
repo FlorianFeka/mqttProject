@@ -21,9 +21,11 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Departure"
             android:layout_gravity="right"
-            />
+            android:onClick="add"
+            android:text="Add"
+            tools:layout_editor_absoluteX="281dp"
+            tools:layout_editor_absoluteY="4dp" />
 
     </android.support.v7.widget.Toolbar>
 
