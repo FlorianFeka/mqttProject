@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -16,43 +18,31 @@ import com.example.osagie.nvsprojekt.R;
  */
 
 public class Home extends AppCompatActivity {
+    String[] poke = {"Ekans", "Pikachu", "Paras", "Ditto"};
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listview);
 
-    /*  ArrayList<String> str = new ArrayList<>();
-        //str.add(0,"Bisasam");
-
-        try {
-            fi = this.openFileInput("Test.txt");
-            br = new BufferedReader(new InputStreamReader(fi));
-            String sr;
-            int i = 0;
-            while ((sr = br.readLine()) != null) {
-               str.add(i,sr);
-                i++;
-            }
-        } catch (Exception e) {
-        } finally {
-            try {
-                if (fi != null)
-                    fi.close();
-                if (br != null)
-                    br.close();
-            } catch (IOException io) {
-                Log.i("xxx", io.getMessage());
-            }
-        }*/
+        Intent intent = new Intent(this,Projekt.class);
 
         Toolbar toolbar =(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Spinger");
 
-        String[] poke = {"Ekans", "Pikachu", "Paras", "Ditto"};
         ListView listView = (ListView)findViewById(R.id.list);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(listView.getContext(), android.R.layout.simple_list_item_1, poke);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, poke);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+                startActivity(intent);
+            }
+
+        });
     }
 
     @Override

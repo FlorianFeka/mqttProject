@@ -105,14 +105,14 @@ public class UserRepository extends BaseRepository <Integer,User>{
         String r_username = "",r_email = "",r_password = "";
         int id = 0;
         User user=null;
-        while(rs.next()){
+        if(rs.next()){
             id = rs.getInt("ID");
             r_username = rs.getString("USERNAME");
             r_email = rs.getString("EMAIL");
             r_password = rs.getString("PASSWORD");
+            user = new User(r_username,r_email,r_password);
+            user.setId(id);
         }
-        user = new User(r_username,r_email,r_password);
-        user.setId(id);
         return user;
     }
 }
