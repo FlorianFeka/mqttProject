@@ -76,11 +76,12 @@ public class UserRepository extends BaseRepository <Integer,User>{
         ResultSet rs = preStmnt.executeQuery();
         List<User> list=new ArrayList<>();
         while(rs.next()){
-            User user=null;
-            user.setId(Integer.parseInt(rs.getString("ID")));
-            user.setUsername(rs.getString("USERNAME"));
-            user.setEmail(rs.getString("EMAIL"));
-            user.setPassword(rs.getString("PASSWORD"));
+            int id=Integer.parseInt(rs.getString("ID"));
+            String name=rs.getString("USERNAME");
+            String email=rs.getString("EMAIL");
+            String password=(rs.getString("PASSWORD"));
+            User user=new User(name,email,password);
+            user.setId(id);
             list.add(user);
         }
         return list;
@@ -114,5 +115,23 @@ public class UserRepository extends BaseRepository <Integer,User>{
             user.setId(id);
         }
         return user;
+    }
+    public int findByUsername(Connection con,String username)throws SQLException{
+        String stmnt="SELECT ID,USERNAME,EMAIL,PASSWORD FROM USER WHERE USERNAME=?";
+        PreparedStatement preStmnt = con.prepareStatement(stmnt);
+        preStmnt.setString(1,username);
+        ResultSet rs = preStmnt.executeQuery();
+        String r_username = "",r_email = "",r_password = "";
+        int id = 0;
+        User user=null;
+        while(rs.next()){
+            id = rs.getInt("ID");
+            r_username = rs.getString("USERNAME");
+            r_email = rs.getString("EMAIL");
+            r_password = rs.getString("PASSWORD");
+        }
+        user = new User(r_username,r_email,r_password);
+        user.setId(id);
+        return user.getId();
     }
 }

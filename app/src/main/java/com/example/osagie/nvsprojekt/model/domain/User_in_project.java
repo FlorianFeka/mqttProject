@@ -13,13 +13,11 @@ import java.util.Comparator;
 
 public class User_in_project extends BaseDomain<Integer,User_in_project> {
     private int user,project_member_type,project;
-    private Timestamp added;
 
-    public User_in_project(int user, int project_member_type, int project, Timestamp added) {
+    public User_in_project(int user, int project, int project_member_type) {
         setUser(user);
         setProject_member_type(project_member_type);
         setProject(project);
-        setAdded(added);
     }
 
     public int getUser() {
@@ -46,14 +44,6 @@ public class User_in_project extends BaseDomain<Integer,User_in_project> {
         this.project = project;
     }
 
-    public Timestamp getAdded() {
-        return added;
-    }
-
-    public void setAdded(Timestamp added) {
-        this.added = added;
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public int compareTo(@NonNull User_in_project user_in_project) {
@@ -70,7 +60,7 @@ public class User_in_project extends BaseDomain<Integer,User_in_project> {
         if (user != that.user) return false;
         if (project_member_type != that.project_member_type) return false;
         if (project != that.project) return false;
-        return added != null ? added.equals(that.added) : that.added == null;
+        return false;
     }
 
     @Override

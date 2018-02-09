@@ -64,7 +64,7 @@ public class Project_member_typeRepository extends BaseRepository<Integer,Projec
         PreparedStatement preStmnt = con.prepareStatement(stmnt);
         preStmnt.setInt(1,id);
         ResultSet rs = preStmnt.executeQuery();
-        Project_member_type pmt=null;
+        Project_member_type pmt=new Project_member_type("","");
         while(rs.next()){
             pmt.setId(Integer.parseInt(rs.getString("ID")));
             pmt.setToken(rs.getString("TOKEN"));
@@ -80,7 +80,7 @@ public class Project_member_typeRepository extends BaseRepository<Integer,Projec
         ResultSet rs = preStmnt.executeQuery();
         List<Project_member_type> list=new ArrayList<>();
         while(rs.next()){
-            Project_member_type pmt=null;
+            Project_member_type pmt=new Project_member_type("","");
             pmt.setId(Integer.parseInt(rs.getString("ID")));
             pmt.setToken(rs.getString("TOKEN"));
             pmt.setDescription(rs.getString("DESCRIPTION"));

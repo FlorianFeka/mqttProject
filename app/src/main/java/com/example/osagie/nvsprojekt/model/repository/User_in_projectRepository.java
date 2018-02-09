@@ -21,7 +21,7 @@ public class User_in_projectRepository  extends BaseRepository<Integer, User_in_
         PreparedStatement preStmnt = con.prepareStatement(stmnt);
         preStmnt.setInt(1,entity.getUser());
         preStmnt.setInt(2,entity.getProject());
-        preStmnt.setTimestamp(3,entity.getAdded());
+        preStmnt.setInt(3,entity.getProject_member_type());
         preStmnt.setInt(4,entity.getId());
         int res = preStmnt.executeUpdate();
         con.commit();
@@ -33,12 +33,12 @@ public class User_in_projectRepository  extends BaseRepository<Integer, User_in_
     public int insert(Connection con, User_in_project entity) throws SQLException {
         if(!exist(con,entity)) {
             String stmnt = "INSERT INTO USER_IN_PROJECT" +
-                    "(USER,PROJECT,ADDED)" +
+                    "(USER,PROJECT,PROJECT_MEMBER_TYP)" +
                     "VALUES (?,?,?)";
             PreparedStatement preStmnt = con.prepareStatement(stmnt);
             preStmnt.setInt(1, entity.getUser());
             preStmnt.setInt(2, entity.getProject());
-            preStmnt.setTimestamp(3, entity.getAdded());
+            preStmnt.setInt(3, entity.getProject_member_type());
             int res = preStmnt.executeUpdate();
             con.commit();
             preStmnt.close();
@@ -47,11 +47,11 @@ public class User_in_projectRepository  extends BaseRepository<Integer, User_in_
         return 0;
     }
     public boolean exist(Connection con,User_in_project entity)throws SQLException {
-        String stmnt="SELECT ID FROM USER_IN_PROJECT WHERE USER=? && PROJECT=? && ADDED=?";
+        String stmnt="SELECT ID FROM USER_IN_PROJECT WHERE USER=? && PROJECT=? && PROJECT_MEMBER_TYP=?";
         PreparedStatement preStmnt = con.prepareStatement(stmnt);
         preStmnt.setInt(1, entity.getUser());
         preStmnt.setInt(2,entity.getProject());
-        preStmnt.setTimestamp(3,entity.getAdded());
+        preStmnt.setInt(3,entity.getProject_member_type());
         ResultSet resultSet= preStmnt.executeQuery();
         while(resultSet.next()){
             int id=resultSet.getInt("ID");
@@ -63,32 +63,32 @@ public class User_in_projectRepository  extends BaseRepository<Integer, User_in_
     }
     @Override
     public User_in_project findById(Connection con, Integer id) throws SQLException {
-        String stmnt="SELECT ID,USER,PROJECT,ADDED FROM USER_IN_PROJECT WHERE ID=?";
+        String stmnt="SELECT ID,USER,PROJECT,PROJECT_MEMBER_TYP FROM USER_IN_PROJECT WHERE ID=?";
         PreparedStatement preStmnt = con.prepareStatement(stmnt);
         preStmnt.setInt(1,id);
         ResultSet rs = preStmnt.executeQuery();
-        User_in_project uip=null;
+        User_in_project uip=new User_in_project(0,0,0);
         while(rs.next()){
             uip.setId(Integer.parseInt(rs.getString("ID")));
             uip.setUser(Integer.parseInt(rs.getString("USER")));
             uip.setProject(Integer.parseInt(rs.getString("PROJECT")));
-            uip.setAdded(Timestamp.valueOf(rs.getString("ADDED")));
+            uip.setProject_member_type(rs.getInt("PROJECT_MEMBER_TYP"));
         }
         return uip;
     }
 
     @Override
     public List<User_in_project> findAll(Connection con) throws SQLException {
-        String stmnt="SELECT ID,USER,PROJECT,ADDED FROM USER_IN_PROJECT";
+        String stmnt="SELECT ID,USER,PROJECT,PROJECT_MEMBER_TYP FROM USER_IN_PROJECT";
         PreparedStatement preStmnt = con.prepareStatement(stmnt);
         ResultSet rs = preStmnt.executeQuery();
         List<User_in_project> list=new ArrayList<>();
         while(rs.next()){
-            User_in_project uip=null;
+            User_in_project uip=new User_in_project(0,0,0);
             uip.setId(Integer.parseInt(rs.getString("ID")));
-            uip.setUser(Integer.parseInt(rs.getString("TOKEN")));
-            uip.setProject(Integer.parseInt(rs.getString("DESCRIPTION")));
-            uip.setAdded(Timestamp.valueOf(rs.getString("ADDED")));
+            uip.setUser(Integer.parseInt(rs.getString("USER")));
+            uip.setProject(Integer.parseInt(rs.getString("PROJECT")));
+            uip.setProject_member_type(rs.getInt("PROJECT_MEMBER_TYP"));
             list.add(uip);
         }
         return list;
