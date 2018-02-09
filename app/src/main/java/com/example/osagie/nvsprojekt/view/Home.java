@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -20,6 +22,7 @@ import java.util.ArrayList;
  */
 
 public class Home extends AppCompatActivity {
+
     private ArrayList<String> list = new ArrayList<>();
     private String username;
     @Override
@@ -51,10 +54,19 @@ public class Home extends AppCompatActivity {
             }
         }*/
         Intent i=getIntent();
+        Intent intent = new Intent(this,Projekt.class);
         username=i.getStringExtra("username");
         final ListView listView = (ListView)findViewById(R.id.list);
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(listView.getContext(), android.R.layout.simple_list_item_1, list);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+                startActivity(intent);
+            }
+
+        });
         Toolbar toolbar =(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Spinger");

@@ -57,7 +57,7 @@ public class AsyncTask_DB_Connection extends AsyncTask<String,Void,Boolean> {
         try {
             data = strings;
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://10.0.2.2:3306/mqtt_projectmanagement","root","mysql");
+            con = DriverManager.getConnection("jdbc:mysql://10.0.2.2:3306/mqtt_projectmanagement","nvs","nvs");
             con.setAutoCommit(false);
             UserRepository userRepository = new UserRepository();
             ProjectRepository projectRepository=new ProjectRepository();

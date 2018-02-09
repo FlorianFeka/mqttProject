@@ -21,6 +21,7 @@
         <activity android:name=".view.Home"></activity>
         <activity android:name=".view.Plus"></activity>
         <activity android:name=".view.UserWahl"></activity>
+        <activity android:name=".view.Projekt"></activity>
     </application>
 
 </manifest>
