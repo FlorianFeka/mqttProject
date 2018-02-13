@@ -42,8 +42,10 @@ public class AsyncTask_DB_Connection extends AsyncTask<String,Void,Boolean> {
     private Home home;
     private Plus plus;
     private String errorMessage="";
+    private int userId;
     private ArrayList<String> usernames;
     private ArrayList<Project> projectWithUsername;
+    private List<User_in_project> user_in_projects;
 
     public AsyncTask_DB_Connection(MainActivity mainActivity){
         this.mainActivity=mainActivity;
@@ -57,14 +59,15 @@ public class AsyncTask_DB_Connection extends AsyncTask<String,Void,Boolean> {
         try {
             data = strings;
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://10.0.2.2:3306/mqtt_projectmanagement","root","mysql");
+            con = DriverManager.getConnection("jdbc:mysql://10.0.0.2:3306/mqtt_projectmanagement","root","toor");
             con.setAutoCommit(false);
             UserRepository userRepository = new UserRepository();
             ProjectRepository projectRepository=new ProjectRepository();
             User_in_projectRepository userInProjectRepository=new User_in_projectRepository();
             if(data[0].equals("signIn")){
                 user = userRepository.findByUsernameAndPassword(con,data[1],data[2]);
-                    if(user.getId()!=0&&user.getUsername()!=""&&user.getEmail()!=""&&user.getPassword()!=""){
+                    if(user!=null && user.getId()!=0 && user.getUsername()!=""&& user.getEmail()!="" && user.getPassword()!=""){
+                        userId = user.getId();
                         return true;
                     }else {
                         setErrorMessage("User wurde nicht gefunden.");
@@ -75,6 +78,7 @@ public class AsyncTask_DB_Connection extends AsyncTask<String,Void,Boolean> {
                 if(!userRepository.exist(con,user)){
                     int erg = userRepository.insert(con,user);
                     if(erg>0){
+                        userId = user.getId();
                         return true;
                     }else{
                         setErrorMessage("User konnte nicht hinzugefügt werden, versuchen sie es später noch einmal");
@@ -94,13 +98,16 @@ public class AsyncTask_DB_Connection extends AsyncTask<String,Void,Boolean> {
             }
             if(data[0].equals("getAllProjectWithUser")){
                 List<User_in_project> list=new ArrayList<>();
+                user_in_projects=new ArrayList<>();
                 list=userInProjectRepository.findAll(con);
                 projectWithUsername=new ArrayList<>();
                 String username=data[1];
                 int i=userRepository.findByUsername(con,username);
                 for(User_in_project uip:list){
-                    if(uip.getUser()==i)
-                    projectWithUsername.add(projectRepository.findById(con,uip.getProject()));
+                    if(uip.getUser()==i){
+                        user_in_projects.add(uip);
+                        projectWithUsername.add(projectRepository.findById(con,uip.getProject()));
+                    }
                 }
                 return true;
             }
@@ -147,13 +154,13 @@ public class AsyncTask_DB_Connection extends AsyncTask<String,Void,Boolean> {
                     userWahl.setList(usernames);
                     break;
                 case "getAllProjectWithUser":
-                    home.setList(projectWithUsername);
+                    home.setList(projectWithUsername,user_in_projects);
                     break;
                 case "createProject" :
                     plus.goToHome();
                     break;
                 default:
-                    mainActivity.goToHome();
+                    mainActivity.goToHome(userId);
                     break;
             }
         }

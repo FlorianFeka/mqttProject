@@ -46,8 +46,9 @@ public class MainActivity extends AppCompatActivity {
         new AsyncTask_DB_Connection(this).execute("register",username,email,password);
     }
 
-    public void goToHome(){
+    public void goToHome(int userId){
         Intent intent = new Intent(this,Home.class);
+        intent.putExtra("userId",userId);
         intent.putExtra("username",data.get("username"));
         startActivity(intent);
         this.finish();

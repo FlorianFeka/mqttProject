@@ -76,7 +76,7 @@ public class ProjectRepository extends BaseRepository<Integer,Project> {
         ResultSet rs = preStmnt.executeQuery();
         Project p=new Project("","","",null,null);
         while(rs.next()){
-            p.setId(Integer.parseInt(rs.getString("ID")));
+            p.setId(rs.getInt("ID"));
             p.setProjectname(rs.getString("PROJECTNAME"));
             p.setClient(rs.getString("CLIENT"));
             p.setDescription(rs.getString("DESCRIPTION"));
