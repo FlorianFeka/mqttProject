@@ -1,5 +1,6 @@
 package com.example.osagie.nvsprojekt.view;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
@@ -83,6 +84,17 @@ public class Plus extends AppCompatActivity
             names+=d+" ";
         }
         new AsyncTask_DB_Connection(this).execute("createProject",name,client,des,start,end,names,username);
+    }
+    public void goToHome(){
+        Intent intent = new Intent();
+        intent.putExtra("username",username);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+        super.onBackPressed();
+    }
+
+    public void showError(String errorMessage){
+        Toast.makeText(this,errorMessage,Toast.LENGTH_LONG).show();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

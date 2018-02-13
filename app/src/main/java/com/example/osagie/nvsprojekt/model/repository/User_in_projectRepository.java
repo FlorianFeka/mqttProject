@@ -17,7 +17,7 @@ import java.util.List;
 public class User_in_projectRepository  extends BaseRepository<Integer, User_in_project>  {
     @Override
     public int update(Connection con, User_in_project entity) throws SQLException {
-        String stmnt="UPDATE USER_IN_PROJECT set USER = ?, PROJECT= ?,ADDED=? where ID = ?";
+        String stmnt="UPDATE USER_IN_PROJECT set USER = ?, PROJECT= ? where ID = ?";
         PreparedStatement preStmnt = con.prepareStatement(stmnt);
         preStmnt.setInt(1,entity.getUser());
         preStmnt.setInt(2,entity.getProject());
@@ -103,5 +103,17 @@ public class User_in_projectRepository  extends BaseRepository<Integer, User_in_
         con.commit();
         preStmnt.close();
         return res;
+    }
+
+    public ArrayList<Integer> getAllProjectByUser(Connection con,int user)throws SQLException {
+        String stmnt="SELECT PROJECT FROM USER_IN_PROJECT WHERE USER=?";
+        PreparedStatement preStmnt = con.prepareStatement(stmnt);
+        preStmnt.setInt(1,user);
+        ResultSet rs = preStmnt.executeQuery();
+        ArrayList<Integer> list=new ArrayList<>();
+        while(rs.next()){
+            list.add(rs.getInt("PROJECT"));
+        }
+        return list;
     }
 }

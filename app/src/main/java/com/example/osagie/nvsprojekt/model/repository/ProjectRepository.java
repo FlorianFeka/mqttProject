@@ -37,17 +37,15 @@ public class ProjectRepository extends BaseRepository<Integer,Project> {
 
     @Override
     public int insert(Connection con, Project entity) throws SQLException {
-        //if(!exist(con,entity)) {
             String stmnt = "INSERT INTO PROJECT" +
-                    "(PROJECTNAME,CLIENT,DESCRIPTION,PROJECTSTART,PROJECTEND,ADDED)" +
-                    "VALUES (?,?,?,?,?,?)";
+                    "(PROJECTNAME,CLIENT,DESCRIPTION,PROJECTSTART,PROJECTEND)" +
+                    "VALUES (?,?,?,?,?)";
             PreparedStatement preStmnt = con.prepareStatement(stmnt, Statement.RETURN_GENERATED_KEYS);
             preStmnt.setString(1,entity.getProjectname());
             preStmnt.setString(2,entity.getClient());
             preStmnt.setString(3,entity.getDescription());
             preStmnt.setDate(4,entity.getProjectstart());
             preStmnt.setDate(5,entity.getProjectend());
-            preStmnt.setTimestamp(6,entity.getAdded());
             int res = preStmnt.executeUpdate();
             ResultSet rs=preStmnt.getGeneratedKeys();
             int id=-1;
@@ -58,34 +56,25 @@ public class ProjectRepository extends BaseRepository<Integer,Project> {
             con.commit();
             preStmnt.close();
             return id;
-        //}
-        //return -1;
     }
-    public boolean exist(Connection con,Project entity)throws SQLException {
-        String stmnt="SELECT ID FROM PROJECT WHERE PROJECTNAME=? && CLIENT=? && DESCRIPTION=?,PROJECTSTART=?,PROJECTEND=?,ADDED=?";
-        PreparedStatement preStmnt = con.prepareStatement(stmnt);
-        preStmnt.setString(1,entity.getProjectname());
-        preStmnt.setString(2,entity.getClient());
-        preStmnt.setString(3,entity.getDescription());
-        preStmnt.setDate(4,entity.getProjectstart());
-        preStmnt.setDate(5,entity.getProjectend());
-        preStmnt.setTimestamp(6,entity.getAdded());
-        ResultSet resultSet= preStmnt.executeQuery();
-        while(resultSet.next()){
-            int id=resultSet.getInt("ID");
-            if(id!=0)
+    public boolean checkname(Connection con,ArrayList<Integer> list,String name)throws SQLException {
+        List<Project> projects=new ArrayList<>();
+        for(int i:list){
+            projects.add(findById(con,i));
+        }
+        for(Project p:projects){
+            if(p.getProjectname().equals(name))
                 return true;
         }
-        preStmnt.close();
         return false;
     }
     @Override
     public Project findById(Connection con, Integer id) throws SQLException {
-        String stmnt="SELECT ID,PROJECTNAME,CLIENT,DESCRIPTION,PROJECTSTART,PROJECTEND,ADDED FROM PROJECT WHERE ID=?";
+        String stmnt="SELECT ID,PROJECTNAME,CLIENT,DESCRIPTION,PROJECTSTART,PROJECTEND FROM PROJECT WHERE ID=?";
         PreparedStatement preStmnt = con.prepareStatement(stmnt);
         preStmnt.setInt(1,id);
         ResultSet rs = preStmnt.executeQuery();
-        Project p=new Project("","","",null,null,null);
+        Project p=new Project("","","",null,null);
         while(rs.next()){
             p.setId(Integer.parseInt(rs.getString("ID")));
             p.setProjectname(rs.getString("PROJECTNAME"));
@@ -93,26 +82,24 @@ public class ProjectRepository extends BaseRepository<Integer,Project> {
             p.setDescription(rs.getString("DESCRIPTION"));
             p.setProjectstart(Date.valueOf(rs.getString("PROJECTSTART")));
             p.setProjectend(Date.valueOf(rs.getString("PROJECTEND")));
-            p.setAdded(Timestamp.valueOf(rs.getString("ADDED")));
         }
         return p;
     }
 
     @Override
     public List<Project> findAll(Connection con) throws SQLException {
-        String stmnt="SELECT ID,PROJECTNAME,CLIENT,DESCRIPTION,PROJECTSTART,PROJECTEND,ADDED FROM PROJECT";
+        String stmnt="SELECT ID,PROJECTNAME,CLIENT,DESCRIPTION,PROJECTSTART,PROJECTEND FROM PROJECT";
         PreparedStatement preStmnt = con.prepareStatement(stmnt);
         ResultSet rs = preStmnt.executeQuery();
         List<Project> list=new ArrayList<>();
         while(rs.next()){
-            Project p=new Project("","","",null,null,null);
+            Project p=new Project("","","",null,null);
             p.setId(Integer.parseInt(rs.getString("ID")));
             p.setProjectname(rs.getString("PROJECTNAME"));
             p.setClient(rs.getString("CLIENT"));
             p.setDescription(rs.getString("DESCRIPTION"));
             p.setProjectstart(Date.valueOf(rs.getString("PROJECTSTART")));
             p.setProjectend(Date.valueOf(rs.getString("PROJECTEND")));
-            p.setAdded(Timestamp.valueOf(rs.getString("ADDED")));
             list.add(p);
         }
         return list;
