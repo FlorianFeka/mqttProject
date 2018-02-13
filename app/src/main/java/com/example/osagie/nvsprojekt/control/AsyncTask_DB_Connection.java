@@ -64,7 +64,7 @@ public class AsyncTask_DB_Connection extends AsyncTask<String,Void,Boolean> {
             User_in_projectRepository userInProjectRepository=new User_in_projectRepository();
             if(data[0].equals("signIn")){
                 user = userRepository.findByUsernameAndPassword(con,data[1],data[2]);
-                    if(user!=null){
+                    if(user.getId()!=0&&user.getUsername()!=""&&user.getEmail()!=""&&user.getPassword()!=""){
                         return true;
                     }else {
                         setErrorMessage("User wurde nicht gefunden.");
@@ -100,14 +100,19 @@ public class AsyncTask_DB_Connection extends AsyncTask<String,Void,Boolean> {
                 int i=userRepository.findByUsername(con,username);
                 for(User_in_project uip:list){
                     if(uip.getUser()==i)
-                    projectWithUsername.add(projectRepository.findById(con,i));
+                    projectWithUsername.add(projectRepository.findById(con,uip.getProject()));
                 }
                 return true;
             }
             if(data[0].equals("createProject")){
+                String projname=data[1];
+                int us=userRepository.findByUsername(con,data[7]);
+                if(projectRepository.checkname(con,userInProjectRepository.getAllProjectByUser(con,us),projname)) {
+                    setErrorMessage("Der User hat diesen Name schon mal vergeben");
+                    return false;
+                }
                 DateFormat format = new SimpleDateFormat(" d.M.yyyy");
-                java.util.Date date= Calendar.getInstance().getTime();
-                Project p =new Project(data[1],data[2],data[3],new Date((format.parse(data[4]).getTime())),new Date((format.parse(data[5]).getTime())),new Timestamp(date.getTime()));
+                Project p =new Project(data[1],data[2],data[3],new Date((format.parse(data[4]).getTime())),new Date((format.parse(data[5]).getTime())));
                 int id=projectRepository.insert(con,p);
                 String[] names=data[6].split(" ");
                 ArrayList<Integer> ar=new ArrayList<>();
@@ -144,6 +149,9 @@ public class AsyncTask_DB_Connection extends AsyncTask<String,Void,Boolean> {
                 case "getAllProjectWithUser":
                     home.setList(projectWithUsername);
                     break;
+                case "createProject" :
+                    plus.goToHome();
+                    break;
                 default:
                     mainActivity.goToHome();
                     break;
@@ -153,6 +161,10 @@ public class AsyncTask_DB_Connection extends AsyncTask<String,Void,Boolean> {
             if(mainActivity!=null){
                 mainActivity.showError(getErrorMessage());
             }
+            if(plus!=null){
+                plus.showError(getErrorMessage());
+            }
+
         }
     }
 

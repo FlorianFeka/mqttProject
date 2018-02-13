@@ -17,13 +17,12 @@ public class Project extends BaseDomain<Integer,Project> {
     private Date projectstart,projectend;
     private Timestamp added;
 
-    public Project(String projectname, String client, String description, Date projectstart, Date projectend, Timestamp added) {
+    public Project(String projectname, String client, String description, Date projectstart, Date projectend) {
         setProjectname(projectname);
         setClient(client);
         setDescription(description);
         setProjectstart(projectstart);
         setProjectend(projectend);
-        setAdded(added);
     }
 
     public String getProjectname() {

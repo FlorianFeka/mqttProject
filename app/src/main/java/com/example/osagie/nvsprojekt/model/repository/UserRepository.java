@@ -59,7 +59,7 @@ public class UserRepository extends BaseRepository <Integer,User>{
         PreparedStatement preStmnt = con.prepareStatement(stmnt);
         preStmnt.setInt(1,id);
         ResultSet rs = preStmnt.executeQuery();
-        User user=null;
+        User user=new User("","","");
         while(rs.next()){
             user.setId(Integer.parseInt(rs.getString("ID")));
             user.setUsername(rs.getString("USERNAME"));

@@ -13,8 +13,8 @@ import java.util.Comparator;
 
 public class User_in_project extends BaseDomain<Integer,User_in_project> {
     private int user,project_member_type,project;
-
-    public User_in_project(int user, int project, int project_member_type) {
+    private Timestamp added;
+    public User_in_project(int user,  int project,int project_member_type) {
         setUser(user);
         setProject_member_type(project_member_type);
         setProject(project);
@@ -34,6 +34,14 @@ public class User_in_project extends BaseDomain<Integer,User_in_project> {
 
     public void setProject_member_type(int project_member_type) {
         this.project_member_type = project_member_type;
+    }
+
+    public Timestamp getAdded() {
+        return added;
+    }
+
+    public void setAdded(Timestamp added) {
+        this.added = added;
     }
 
     public int getProject() {

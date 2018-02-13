@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.osagie.nvsprojekt.R;
 import com.example.osagie.nvsprojekt.control.AsyncTask_DB_Connection;
@@ -52,9 +53,7 @@ public class Home extends AppCompatActivity {
         }*/
         Intent i=getIntent();
         username=i.getStringExtra("username");
-        final ListView listView = (ListView)findViewById(R.id.list);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(listView.getContext(), android.R.layout.simple_list_item_1, list);
-        listView.setAdapter(adapter);
+        this.setList(null);
         Toolbar toolbar =(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Spinger");
@@ -74,23 +73,35 @@ public class Home extends AppCompatActivity {
             case R.id.addId:
                 Intent intent = new Intent(this, Plus.class);
                 intent.putExtra("username",username);
-                startActivity(intent);
+                startActivityForResult(intent,1);
                 return true;
         }
-        return true;
+        return true; //wait what true and true? like wat?!!?
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            Intent i=getIntent();
+            username=i.getStringExtra("username");
+            new AsyncTask_DB_Connection(this).execute("getAllProjectWithUser",username);
+        }
+    }
     public ArrayList<String> getList() {
         return list;
     }
 
     public void setList(ArrayList<Project> list) {
-        for(Project p:list){
-            this.list.add(p.getProjectname());
+        if(list!=null) {
+            this.list=new ArrayList<>();
+            for (Project p : list) {
+                this.list.add(p.getProjectname());
+            }
         }
         ListView listView = (ListView)findViewById(R.id.list);
-        ((ArrayAdapter)listView.getAdapter()).notifyDataSetChanged();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(listView.getContext(), android.R.layout.simple_list_item_1, this.list);
+        listView.setAdapter(adapter);
+        //((ArrayAdapter)listView.getAdapter()).notifyDataSetChanged();
 
     }
 }
