@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -27,30 +29,6 @@ public class Home extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listview);
-
-    /*  ArrayList<String> str = new ArrayList<>();
-        //str.add(0,"Bisasam");
-
-        try {
-            fi = this.openFileInput("Test.txt");
-            br = new BufferedReader(new InputStreamReader(fi));
-            String sr;
-            int i = 0;
-            while ((sr = br.readLine()) != null) {
-               str.add(i,sr);
-                i++;
-            }
-        } catch (Exception e) {
-        } finally {
-            try {
-                if (fi != null)
-                    fi.close();
-                if (br != null)
-                    br.close();
-            } catch (IOException io) {
-                Log.i("xxx", io.getMessage());
-            }
-        }*/
         Intent i=getIntent();
         username=i.getStringExtra("username");
         this.setList(null);
