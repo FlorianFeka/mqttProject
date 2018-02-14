@@ -99,19 +99,18 @@ public class Home extends AppCompatActivity {
                 if(getList()!=null){
                     int projectId =((Project) projects.get(position)).getId();
                     for(User_in_project user_in_project: user_in_projects){
-                        if(user_in_project.equals(projectId)){
+                        if(user_in_project.getProject() == projectId){
                             int project_memeber_type = user_in_project.getProject_member_type();
                             if(project_memeber_type==1){
-
+                                statusSehen(projectId);
                             }else if(project_memeber_type==2){
-
+                                statusGeben(projectId);
                             }
                         }
                     }
                 }
             }
         });
-        //((ArrayAdapter)listView.getAdapter()).notifyDataSetChanged();
     }
 
     public void statusSehen(int projectId){
@@ -123,6 +122,7 @@ public class Home extends AppCompatActivity {
     public void statusGeben(int projectId){
         Intent intent = new Intent(this, StatusGeben.class);
         intent.putExtra("projectId",projectId);
+        intent.putExtra("userId",userId);
         startActivity(intent);
     }
 

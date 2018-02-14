@@ -17,6 +17,7 @@ import com.example.osagie.nvsprojekt.view.MainActivity;
 
 import com.example.osagie.nvsprojekt.model.domain.User;
 import com.example.osagie.nvsprojekt.view.Plus;
+import com.example.osagie.nvsprojekt.view.StatusListe;
 import com.example.osagie.nvsprojekt.view.UserWahl;
 
 import java.sql.Connection;
@@ -46,6 +47,7 @@ public class AsyncTask_DB_Connection extends AsyncTask<String,Void,Boolean> {
     private ArrayList<String> usernames;
     private ArrayList<Project> projectWithUsername;
     private List<User_in_project> user_in_projects;
+    private StatusListe statusListe;
 
     public AsyncTask_DB_Connection(MainActivity mainActivity){
         this.mainActivity=mainActivity;
@@ -53,6 +55,7 @@ public class AsyncTask_DB_Connection extends AsyncTask<String,Void,Boolean> {
     public AsyncTask_DB_Connection(UserWahl userWahl){this.userWahl=userWahl;}
     public AsyncTask_DB_Connection(Home home){this.home=home;}
     public AsyncTask_DB_Connection(Plus plus){this.plus=plus;}
+    public AsyncTask_DB_Connection(StatusListe statusListe){this.statusListe=statusListe;}
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected Boolean doInBackground(String... strings) {
@@ -135,6 +138,16 @@ public class AsyncTask_DB_Connection extends AsyncTask<String,Void,Boolean> {
                 }
                 return true;
             }
+            if(data[0].equals("projectUsers")){
+                int userId = Integer.parseInt(data[1]);
+                int projectId = Integer.parseInt(data[2]);
+                ArrayList<Integer> userIds = new ArrayList<>();
+                User_in_projectRepository uip = new User_in_projectRepository();
+                userIds = uip.findByProjectNoUserId(con,projectId,userId);
+                UserRepository up = new UserRepository();
+                usernames = up.findUsernamesByUserIds(con,userIds);
+                return true;
+            }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -157,6 +170,9 @@ public class AsyncTask_DB_Connection extends AsyncTask<String,Void,Boolean> {
                     home.setList(projectWithUsername,user_in_projects);
                     break;
                 case "createProject" :
+                    plus.goToHome();
+                    break;
+                case "projectUsers" :
                     plus.goToHome();
                     break;
                 default:

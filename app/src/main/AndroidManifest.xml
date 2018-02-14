@@ -22,6 +22,9 @@
         <activity android:name=".view.Plus"></activity>
         <activity android:name=".view.UserWahl"></activity>
         <activity android:name=".view.Projekt"></activity>
+        <activity android:name=".view.StatusGeben"></activity>
+        <activity android:name=".view.StatusListe"></activity>
+        <activity android:name=".view.StatusSehen"></activity>
     </application>
 
 </manifest>

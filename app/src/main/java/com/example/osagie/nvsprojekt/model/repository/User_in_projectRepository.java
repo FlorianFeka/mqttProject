@@ -77,6 +77,19 @@ public class User_in_projectRepository  extends BaseRepository<Integer, User_in_
         return uip;
     }
 
+    public ArrayList<Integer> findByProjectNoUserId(Connection con,int projectId, int userId) throws SQLException {
+        String stmnt="SELECT ID,USER,PROJECT,PROJECT_MEMBER_TYP FROM USER_IN_PROJECT WHERE PROJECT=? AND USER<>?";
+        PreparedStatement preStmnt = con.prepareStatement(stmnt);
+        preStmnt.setInt(1,projectId);
+        preStmnt.setInt(2,userId);
+        ResultSet rs = preStmnt.executeQuery();
+        ArrayList<Integer> list = new ArrayList<>();
+        while(rs.next()){
+            list.add(rs.getInt("USER"));
+        }
+        return list;
+    }
+
     @Override
     public List<User_in_project> findAll(Connection con) throws SQLException {
         String stmnt="SELECT ID,USER,PROJECT,PROJECT_MEMBER_TYP FROM USER_IN_PROJECT";

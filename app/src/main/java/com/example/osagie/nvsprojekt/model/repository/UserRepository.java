@@ -116,6 +116,28 @@ public class UserRepository extends BaseRepository <Integer,User>{
         }
         return user;
     }
+
+    public ArrayList<String>  findUsernamesByUserIds(Connection con, ArrayList<Integer> userIds) throws SQLException {
+        String stmnt = "SELECT USERNAME FROM USER WHERE ";
+        for (int i = 0; i<userIds.size() ; i++){
+            if(i==userIds.size()-1){
+                stmnt += "ID=?";
+            }else {
+                stmnt += "ID=? OR ";
+            }
+        }
+        PreparedStatement preStmnt = con.prepareStatement(stmnt);
+        for (int i = 0; i<userIds.size() ; i++){
+            preStmnt.setInt(i+1,userIds.get(i));
+        }
+        ResultSet rs = preStmnt.executeQuery();
+        ArrayList<String> usernames = new ArrayList<>();
+        if(rs.next()){
+            usernames.add(rs.getString("USERNAME"));
+        }
+        return  usernames;
+    }
+
     public int findByUsername(Connection con,String username)throws SQLException{
         String stmnt="SELECT ID,USERNAME,EMAIL,PASSWORD FROM USER WHERE USERNAME=?";
         PreparedStatement preStmnt = con.prepareStatement(stmnt);
